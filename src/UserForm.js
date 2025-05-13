@@ -17,8 +17,8 @@ const UserForm = ({
     const newUser = { name, email, age };
 
     const url = selectedId
-      ? `http://localhost:5000/user/${selectedId}`
-      : "http://localhost:5000/user";
+      ? `http://192.168.1.64:5000/user/${selectedId}`
+      : "http://192.168.1.64:5000/user";
     const method = selectedId
       ? axios.put(url, newUser)
       : axios.post(url, newUser);
