@@ -9,58 +9,35 @@ const UserForm = ({
   setEmail,
   age,
   setAge,
+  address,
+  setAddress,
   selectedId,
   setSelectedId,
 }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
-    const newUser = { name, email, age };
+
+    const PostData = new FormData();
+    PostData.append("name", name);
+    PostData.append("email", email);
+    PostData.append("age", age);
+    PostData.append("address", address);
 
     const url = selectedId
-      ? `http://192.168.1.64:5000/user/${selectedId}`
-      : "http://192.168.1.64:5000/user";
+      ? `http://192.168.1.71:5000/students/${selectedId}`
+      : "http://192.168.1.71:5000/students";
     const method = selectedId
-      ? axios.put(url, newUser)
-      : axios.post(url, newUser);
+      ? axios.put(url, PostData)
+      : axios.post(url, PostData);
     method
       .then((response) => {
         fetchUsers();
-        setName("");
-        setEmail("");
-        setAge();
+
         setSelectedId();
       })
       .catch((error) => {
         console.error("Error adding user:", error);
       });
-
-    // if (selectedId) {
-    //   axios
-    //     .put(url, newUser)
-    //     .then((response) => {
-    //       fetchUsers();
-    //       setName("");
-    //       setEmail("");
-    //       setAge();
-    //       setSelectedId();
-    //     })
-    //     .catch((error) => {
-    //       console.error("Error adding user:", error);
-    //     });
-    // } else {
-    //   axios
-    //     .post(url, newUser)
-    //     .then((response) => {
-    //       fetchUsers();
-    //       setName("");
-    //       setEmail("");
-    //       setAge();
-    //       setSelectedId();
-    //     })
-    //     .catch((error) => {
-    //       console.error("Error adding user:", error);
-    //     });
-    // }
   };
 
   return (
@@ -72,7 +49,7 @@ const UserForm = ({
         onChange={(e) => setName(e.target.value)}
       />
       <input
-        type="email"
+        type="text"
         placeholder="Email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
@@ -83,7 +60,17 @@ const UserForm = ({
         value={age}
         onChange={(e) => setAge(e.target.value)}
       />
-      <button type="submit">{selectedId ? "Update User" : "Add User"} </button>
+
+      <input
+        type="text"
+        placeholder="address"
+        value={address}
+        onChange={(e) => setAddress(e.target.value)}
+      />
+
+      <button type="submit">
+        {selectedId ? "Update Student" : "Add Student"}{" "}
+      </button>
     </form>
   );
 };
