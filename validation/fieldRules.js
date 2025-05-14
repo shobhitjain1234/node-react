@@ -22,7 +22,7 @@ module.exports = {
   },
   address: {
     required: false,
-    min: 1,
+    min: 5,
     max: 10,
     label: "Address",
     type: "string",

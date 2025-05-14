@@ -1,5 +1,5 @@
 function validateFields(data, rules) {
-  const errors = {};
+  const errors = [];
 
   for (const field in rules) {
     const rule = rules[field];
@@ -8,7 +8,7 @@ function validateFields(data, rules) {
 
     // Required check
     if (rule.required && (!value || value.toString().trim() === "")) {
-      errors[field] = `${label} is required`;
+      errors.push(`${label} is required`);
       continue;
     }
 
@@ -18,42 +18,62 @@ function validateFields(data, rules) {
 
     // Type check
     if (rule.type === "int" && isNaN(parseInt(strValue))) {
-      errors[field] = `${label} must be a number`;
+      errors.push(`${label} must be a number`);
       continue;
     }
 
     if (rule.type === "string" && typeof strValue !== "string") {
-      errors[field] = `${label} must be a string`;
+      errors.push(`${label} must be a string`);
       continue;
     }
 
     // Min length check
     if (rule.min && strValue.length < rule.min) {
-      errors[field] = `${label} must be at least ${rule.min} characters`;
+      errors.push(`${label} must be at least ${rule.min} characters`);
       continue;
     }
 
     // Max length check
     if (rule.max && strValue.length > rule.max) {
-      errors[field] = `${label} should not be more than ${rule.max} characters`;
+      errors.push(`${label} should not be more than ${rule.max} characters`);
       continue;
     }
 
     // Regex check
     if (rule.regex && !rule.regex.test(strValue)) {
-      errors[field] = `${label} format is invalid`;
+      errors.push(`${label} format is invalid`);
     }
   }
 
   return errors;
 }
 
-function checkDuplicate(db, tableName, columnName, value) {
+function checkDuplicate(db, tableName, conditions) {
   return new Promise((resolve, reject) => {
-    const query = `SELECT id FROM ?? WHERE ?? = ?`;
-    db.query(query, [tableName, columnName, value], (err, results) => {
+    const fields = Object.keys(conditions);
+    const values = Object.values(conditions);
+
+    if (fields.length === 0) return resolve(null);
+
+    const whereClause = fields.map((field) => `?? = ?`).join(" OR ");
+    const queryParams = fields.flatMap((field, idx) => [field, values[idx]]);
+
+    const query = `SELECT * FROM ?? WHERE ${whereClause} LIMIT 1`;
+
+    db.query(query, [tableName, ...queryParams], (err, results) => {
       if (err) return reject(err);
-      resolve(results.length > 0);
+
+      if (results.length > 0) {
+        const duplicateFields = {};
+        for (let key of fields) {
+          if (results[0][key] === conditions[key]) {
+            duplicateFields[key] = true;
+          }
+        }
+        resolve(duplicateFields); // e.g., { email: true }
+      } else {
+        resolve(null);
+      }
     });
   });
 }

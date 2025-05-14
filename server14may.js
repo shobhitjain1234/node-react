@@ -79,9 +79,10 @@ app.get("/students/:id", (req, res) => {
 // Add a new user
 
 app.post("/students", upload.none(), async (req, res) => {
+  // hamne ek js file bana li ha fieldRules.js jisme validation define karr dia hn harr ek field ke jisse ham ek baar ma sari fields ke validation rules full fill ho rahe hn ki nhi wo check krr lenge
   const errors = validateFields(req.body, fieldRules);
 
-  if (Object.keys(errors).length > 0) {
+  if (errors.length > 0) {
     return res.status(400).json({
       code: errorCode.validation_err,
       errors,
@@ -91,20 +92,21 @@ app.post("/students", upload.none(), async (req, res) => {
   const { name, email, age, address } = req.body;
 
   try {
-    const isDup = await checkDuplicate(db, "student", "email", email);
-    if (isDup) {
-      return res
-        .status(400)
-        .json({ code: errorCode.email_exist, msg: messages.email_pre });
+    // it is an common function which help us to find that duplicate is present or Notification. jis kisi field ka duplicate dekhna ho wo field pass kardo common function ma
+    const duplicates = await checkDuplicate(db, "student", { email, name });
+
+    if (duplicates) {
+      const errors = {};
+      if (duplicates.email) errors.email = messages.email_pre;
+      if (duplicates.name) errors.name = messages.name_pre;
+
+      return res.status(400).json({
+        code: errorCode.duplicate_entry,
+        errors,
+      });
     }
 
-    const isDupname = await checkDuplicate(db, "student", "name", name);
-    if (isDupname) {
-      return res
-        .status(400)
-        .json({ code: errorCode.name_exist, msg: messages.name_pre });
-    }
-
+    // jab sari conditions (duplicate ha nhi nhi, validation rule full fill ho rahe ha ki nhi jab ye chalega)
     db.query(
       "INSERT INTO student (name, email, age, address) VALUES (?, ?, ?, ?)",
       [name, email, age, address],
@@ -126,7 +128,7 @@ app.post("/students", upload.none(), async (req, res) => {
 app.put("/students/:id", upload.none(), (req, res) => {
   const errors = validateFields(req.body, fieldRules);
 
-  if (Object.keys(errors).length > 0) {
+  if (errors.length > 0) {
     return res.status(400).json({
       code: errorCode.validation_err,
       errors,
