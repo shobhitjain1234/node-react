@@ -8,8 +8,10 @@ exports.getUsers = (req, res) => {
 };
 
 exports.createUser = (req, res) => {
-  const { name, email } = req.body;
-  const user = { name, email };
+  const { name, email, address } = req.body;
+
+  const user = { name, email, address };
+
   userModel.createUser(user, (err, result) => {
     if (err) return res.status(500).send(err);
 

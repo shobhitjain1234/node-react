@@ -14,6 +14,6 @@ const userSchema = Joi.object({
     "string.empty": "Email is required",
     "any.required": "Email is required",
   }),
-});
+}).unknown(true);
 
 module.exports = { userSchema };
