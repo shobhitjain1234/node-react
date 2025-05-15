@@ -7,10 +7,6 @@ const UserForm = ({
   setName,
   email,
   setEmail,
-  age,
-  setAge,
-  address,
-  setAddress,
   selectedId,
   setSelectedId,
 }) => {
@@ -20,12 +16,11 @@ const UserForm = ({
     const PostData = new FormData();
     PostData.append("name", name);
     PostData.append("email", email);
-    PostData.append("age", age);
-    PostData.append("address", address);
+    PostData.append("address", "");
 
     const url = selectedId
-      ? `http://192.168.1.71:5000/students/${selectedId}`
-      : "http://192.168.1.71:5000/students";
+      ? `http://192.168.1.71:5000/api/users/${selectedId}`
+      : "http://192.168.1.71:5000/api/users";
     const method = selectedId
       ? axios.put(url, PostData)
       : axios.post(url, PostData);
@@ -33,10 +28,12 @@ const UserForm = ({
       .then((response) => {
         fetchUsers();
 
+        if (response?.data?.code == 104) alert(response?.data?.message);
+
         setSelectedId();
       })
       .catch((error) => {
-        console.error("Error adding user:", error);
+        console.error("error+++", error);
       });
   };
 
@@ -53,19 +50,6 @@ const UserForm = ({
         placeholder="Email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        type="number"
-        placeholder="Age"
-        value={age}
-        onChange={(e) => setAge(e.target.value)}
-      />
-
-      <input
-        type="text"
-        placeholder="address"
-        value={address}
-        onChange={(e) => setAddress(e.target.value)}
       />
 
       <button type="submit">
