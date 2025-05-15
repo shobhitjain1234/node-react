@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "react-scripts start --host 0.0.0.0",
-    "dev": "nodemon server14may.js"
+    "start": "nodemon app.js"
   },
   "keywords": [],
   "author": "",
