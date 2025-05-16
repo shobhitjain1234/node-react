@@ -28,7 +28,7 @@ const UserForm = ({
       .then((response) => {
         fetchUsers();
 
-        if (response?.data?.code == 104) alert(response?.data?.message);
+        if (response?.data?.code !== 200) alert(response?.data?.message);
 
         setSelectedId();
       })
