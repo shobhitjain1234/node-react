@@ -14,6 +14,12 @@ const userSchema = Joi.object({
     "string.empty": "Email is required",
     "any.required": "Email is required",
   }),
+  password: Joi.string().min(6).max(12).required().messages({
+    "string.min": "Password must be at least 6 characters",
+    "string.max": "Password should not be more than 12 characters",
+    "string.empty": "Password is required",
+    "any.required": "Password is required",
+  }),
 }).unknown(true);
 
 module.exports = { userSchema };
