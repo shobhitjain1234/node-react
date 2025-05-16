@@ -15,7 +15,7 @@ exports.createUser = (req, res) => {
   userModel.createUser(user, (err, result) => {
     if (err) return res.status(500).send(err);
 
-    res.json({ message: "User created", id: result.insertId });
+    res.json({ message: "User created", id: result.insertId, code: 200 });
   });
 };
 

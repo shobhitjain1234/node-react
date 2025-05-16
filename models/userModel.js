@@ -15,3 +15,7 @@ exports.updateUser = (id, user, cb) => {
 exports.deleteUser = (id, cb) => {
   db.query("DELETE FROM student WHERE id = ?", [id], cb);
 };
+
+exports.findUserByEmail = (email, cb) => {
+  db.query("SELECT * FROM student WHERE email = ?", [email], cb);
+};

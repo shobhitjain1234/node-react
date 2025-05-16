@@ -4,6 +4,7 @@ const userController = require("../controllers/userController");
 
 const { userSchema, userSchema12 } = require("../validators/userValidator");
 const { checkValidation } = require("../validators/validate");
+const { checkEmailUnique } = require("../middleware/checkEmailUnique");
 
 const router = express.Router();
 
@@ -15,6 +16,7 @@ router.post(
   "/users",
   upload.none(),
   checkValidation(userSchema),
+  checkEmailUnique,
   userController.createUser
 ); // parse multipart form-data
 
