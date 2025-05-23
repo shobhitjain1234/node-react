@@ -6,7 +6,7 @@ exports.getUsers = (req, res) => {
     if (err) return res.status(500).send(err);
     res.json(results);
   });
-};
+};   
 
 exports.createUser = async (req, res) => {
   const { name, email, address, password } = req.body;
@@ -37,5 +37,17 @@ exports.deleteUser = (req, res) => {
   userModel.deleteUser(id, (err) => {
     if (err) return res.status(500).send(err);
     res.json({ message: "User deleted" });
+  });
+};
+
+exports.createCompany = async (req, res) => {
+  const { name, address } = req.body;
+
+  const user = { name, address };
+
+  userModel.createCompany(user, (err, result) => {
+    if (err) return res.status(500).send(err);
+
+    res.json({ message: "company created", id: result.insertId, code: 200 });
   });
 };

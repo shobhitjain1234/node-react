@@ -1,7 +1,7 @@
 const db = require("../config/db");
 
 exports.getAllUsers = (cb) => {
-  db.query("SELECT * FROM student", cb);
+  db.query("SELECT * FROM student", cb);    
 };
 
 exports.createUser = (user, cb) => {
@@ -18,4 +18,8 @@ exports.deleteUser = (id, cb) => {
 
 exports.findUserByEmail = (email, cb) => {
   db.query("SELECT * FROM student WHERE email = ?", [email], cb);
+};
+
+exports.createCompany = (user, cb) => {
+  db.query("INSERT INTO company SET ?", user, cb);
 };
