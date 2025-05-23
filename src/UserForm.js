@@ -17,10 +17,11 @@ const UserForm = ({
     PostData.append("name", name);
     PostData.append("email", email);
     PostData.append("address", "");
+    PostData.append("password", "");
 
     const url = selectedId
-      ? `http://192.168.1.71:5000/api/users/${selectedId}`
-      : "http://192.168.1.71:5000/api/users";
+      ? `http://192.168.1.73:5000/api/users/${selectedId}`
+      : "http://192.168.1.73:5000/api/users";
     const method = selectedId
       ? axios.put(url, PostData)
       : axios.post(url, PostData);

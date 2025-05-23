@@ -13,7 +13,7 @@ function App() {
 
   const fetchUsers = () => {
     axios
-      .get("http://192.168.1.71:5000/api/users")
+      .get("http://192.168.1.73:5000/api/users")
       .then((response) => {
         console.log("fetchUsers", response);
 
@@ -30,7 +30,7 @@ function App() {
 
   const deleteUser = (id) => {
     axios
-      .delete(`http://192.168.1.71:5000/api/users/${id}`)
+      .delete(`http://192.168.1.73:5000/api/users/${id}`)
       .then((response) => {
         console.log("User deleted:", response.data);
         // Refresh the user list after deletion
