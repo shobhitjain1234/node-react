@@ -38,7 +38,7 @@ exports.deleteUser = (req, res) => {
     if (err) return res.status(500).send(err);
     res.json({ message: "User deleted" });
   });
-};
+};   
 
 exports.createCompany = async (req, res) => {
   const { name, address } = req.body;

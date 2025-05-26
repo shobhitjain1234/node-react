@@ -1,36 +1,72 @@
-// validators/userValidator.js
-const Joi = require("joi");
+const userSchema = {
+  type: "object",
+  required: ["name", "email", "password"],
+  properties: {
+    name: {
+      type: "string",
+      minLength: 3,
+      maxLength: 20,
+      errorMessage: {
+        type: "Name must be a text value",
+        minLength: "Name must be at least 3 characters long",
+        maxLength: "Name should not be more than 20 characters"
+      }
+    },
+    email: {   
+      type: "string",
+      format: "email",
+      errorMessage: {
+        type: "Email must be a string",
+        format: "Email must be a valid email address"
+      }
+    },
+    password: {
+      type: "string",
+      minLength: 6,
+      maxLength: 12,
+      errorMessage: {
+        type: "Password must be a string",
+        minLength: "Password must be at least 6 characters",
+        maxLength: "Password should not be more than 12 characters"
+      }
+    },
+    address: {
+      // no validation
+    }
+  },
+  additionalProperties: true,
+  errorMessage: {
+    required: {
+      name: "Name is required",
+      email: "Email is required",
+      password: "Password is required"
+    },
+    _: "Invalid data" // fallback message
+  }
+};
 
-const userSchema = Joi.object({
-  name: Joi.string().min(3).max(20).required().messages({
-    "string.base": "Name must be a text value",
-    "string.empty": "Name is required",
-    "string.min": "Name must be at least 3 characters long",
-    "string.max": "Name should not be more then 20 characters",
-    "any.required": "Name is required",
-  }),
-  email: Joi.string().email().required().messages({
-    "string.email": "Email must be a valid email address",
-    "string.empty": "Email is required",
-    "any.required": "Email is required",
-  }),
-  password: Joi.string().min(6).max(12).required().messages({
-    "string.min": "Password must be at least 6 characters",
-    "string.max": "Password should not be more than 12 characters",
-    "string.empty": "Password is required",
-    "any.required": "Password is required",
-  }),
-}).unknown(true);
 
+const companySchema = {   
+  type: "object",
+  properties: {
+    name: {
+      type: "string",
+      minLength: 3,
+      maxLength: 20,
+      errorMessage: {
+        type: "Name must be a text value",
+        minLength: "Company name must be at least 3 characters",
+        maxLength: "Company name must not exceed 20 characters"
+      }
+    }
+  },
+  required: ["name"],
+  additionalProperties: false,
+  errorMessage: {
+    required: {
+      name: "Company name is required"
+    }
+  }
+};
 
-const companySchema = Joi.object({
-  name: Joi.string().min(3).max(20).required().messages({
-    "string.base": "Name must be a text value",
-    "string.empty": "Name is required",
-    "string.min": "Name must be at least 3 characters long",
-    "string.max": "Name should not be more then 20 characters",
-    "any.required": "Name is required",
-  }),
-}).unknown(true);
-
-module.exports = { userSchema,companySchema };
+module.exports = { userSchema, companySchema };

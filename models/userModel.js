@@ -3,7 +3,7 @@ const db = require("../config/db");
 exports.getAllUsers = (cb) => {
   db.query("SELECT * FROM student", cb);    
 };
-
+   
 exports.createUser = (user, cb) => {
   db.query("INSERT INTO student SET ?", user, cb);
 };
