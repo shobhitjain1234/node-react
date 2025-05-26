@@ -12,11 +12,13 @@ const userSchema = {
         maxLength: "Name should not be more than 20 characters"
       }
     },
-    email: {   
+    email: {
       type: "string",
+      minLength: 10,
       format: "email",
       errorMessage: {
         type: "Email must be a string",
+        minLength: "Email must be at least 10 characters long",
         format: "Email must be a valid email address"
       }
     },
@@ -30,9 +32,7 @@ const userSchema = {
         maxLength: "Password should not be more than 12 characters"
       }
     },
-    address: {
-      // no validation
-    }
+
   },
   additionalProperties: true,
   errorMessage: {
@@ -46,7 +46,7 @@ const userSchema = {
 };
 
 
-const companySchema = {   
+const companySchema = {
   type: "object",
   properties: {
     name: {

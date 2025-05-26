@@ -10,16 +10,21 @@ ajvErrors(ajv);
 const checkValidation = (schema) => {
   const validate = ajv.compile(schema); // compile schema with AJV
   return (req, res, next) => {
-    const valid = validate(req.body);
-    if (!valid) {
-      const error = validate.errors[0]; // show first error only
-      return res.json({
-        message: error.message,
-        code: 104
-      });
-    }
-    next();
-  };
+  // Remove empty strings before validating
+  Object.keys(req.body).forEach(key => {
+    if (req.body[key] === "") delete req.body[key];
+  });
+
+  const valid = validate(req.body);
+  if (!valid) {
+    const error = validate.errors[0];
+    return res.json({
+      message: error.message,
+      code: 104
+    });
+  }
+  next();
+};
 };
 
 module.exports = { checkValidation };
