@@ -17,7 +17,7 @@ const UserForm = ({
     PostData.append("name", name);
     PostData.append("email", email);
     PostData.append("address", "");
-    PostData.append("password", "");
+    PostData.append("password", "123456");
 
     const url = selectedId
       ? `http://192.168.1.73:5000/api/users/${selectedId}`
