@@ -1,7 +1,7 @@
 const userModel = require("../models/userModel");
 const bcrypt = require("bcrypt");
 
-exports.getUsers = (req, res) => {
+exports.getUsers = (req, res) => {   
   userModel.getAllUsers((err, results) => {
     if (err) return res.status(500).send(err);
     res.json(results);

@@ -1,6 +1,6 @@
 const db = require("../config/db");
 
-exports.getAllUsers = (cb) => {
+exports.getAllUsers = (cb) => {   
   db.query("SELECT * FROM student", cb);    
 };
    
