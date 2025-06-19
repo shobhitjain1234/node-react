@@ -1,7 +1,7 @@
 const userModel = require("../models/userModel");
 const bcrypt = require("bcrypt");
 
-const { generateJWT } = require("../jwtUtils");
+const { generateJWT } = require("../utils/jwtUtils");
 
 exports.getUsers = (req, res) => {
   userModel.getAllUsers((err, results) => {
