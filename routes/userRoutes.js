@@ -25,6 +25,15 @@ router.put("/users/:id", upload.none(), userController.updateUser);
 router.delete("/users/:id", userController.deleteUser);
 
 router.post(
+  "/signup",
+  upload.none(),
+  checkValidation(userSchema),
+  userController.handleUserSignUp
+); // Sign-Up route
+
+router.post("/login", userController.loginUser); // Login route
+
+router.post(
   "/company",
   upload.none(),
   checkValidation(companySchema),

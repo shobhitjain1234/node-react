@@ -111,6 +111,7 @@ npx knex migrate:latest
 
 // 7. Rollback last migration:
 npx knex migrate:rollback
+jab bhi kush chnage kara migration file ma to change ke baad roll back karna ha then latest wali cmd chalana ha.
 
 // 8. Rollback a specific migration:
 npx knex migrate:down 20250523105516_create_company_table.js
