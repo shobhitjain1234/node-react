@@ -31,7 +31,7 @@ router.post(
   userController.handleUserSignUp
 ); // Sign-Up route
 
-router.post("/login", userController.loginUser); // Login route
+router.post("/login", upload.none(), userController.loginUser); // Login route
 
 router.post(
   "/company",
