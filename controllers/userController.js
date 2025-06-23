@@ -97,3 +97,24 @@ exports.loginUser = (req, res) => {
     res.json({ message: "Login successful", token: token });
   });
 };
+
+exports.createUserList = (req, res) => {
+  const { title, description } = req.body;
+  const user_id = req.user.id; // From JWT token
+
+  const item = { title, description, user_id };
+
+  userModel.createUserList(item, (err, result) => {
+    if (err) return res.status(500).send(err);
+    res.json({ message: "Item added", id: result.insertId });
+  });
+};
+
+exports.getUserList = (req, res) => {
+  const user_id = req.user.id;
+
+  userModel.getUserListByUserId(user_id, (err, results) => {
+    if (err) return res.status(500).send(err);
+    res.json(results);
+  });
+};

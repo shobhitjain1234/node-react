@@ -2,9 +2,14 @@ const express = require("express");
 const multer = require("multer");
 const userController = require("../controllers/userController");
 
-const { userSchema, companySchema } = require("../validators/userValidator");
+const {
+  userSchema,
+  companySchema,
+  createUserList,
+} = require("../validators/userValidator");
 const { checkValidation } = require("../validators/validate");
 const { checkEmailUnique } = require("../middleware/checkEmailUnique");
+const { authenticateToken } = require("../middleware/auth");
 
 const router = express.Router();
 
@@ -39,5 +44,15 @@ router.post(
   checkValidation(companySchema),
   userController.createCompany
 ); // parse multipart form-data
+
+router.post(
+  "/userlist",
+  upload.none(),
+  checkValidation(createUserList),
+  authenticateToken,
+  userController.createUserList
+);
+
+router.get("/userlist", authenticateToken, userController.getUserList);
 
 module.exports = router;

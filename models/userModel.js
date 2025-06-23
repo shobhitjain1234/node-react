@@ -2,7 +2,7 @@ const db = require("../config/db");
 const bcrypt = require("bcrypt");
 
 exports.getAllUsers = (cb) => {
-  db.query("SELECT * FROM student", cb);
+  db.query("SELECT * FROM userLogin", cb);
 };
 
 exports.createUser = (user, cb) => {
@@ -49,4 +49,12 @@ exports.checkUserCredentials = (email, password, cb) => {
       return cb(null, user); // Successful login
     }
   );
+};
+
+exports.createUserList = (item, cb) => {
+  db.query("INSERT INTO userList SET ?", item, cb);
+};
+
+exports.getUserListByUserId = (user_id, cb) => {
+  db.query("SELECT * FROM userList WHERE user_id = ?", [user_id], cb);
 };

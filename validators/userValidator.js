@@ -9,8 +9,8 @@ const userSchema = {
       errorMessage: {
         type: "Name must be a text value",
         minLength: "Name must be at least 3 characters long",
-        maxLength: "Name should not be more than 20 characters"
-      }
+        maxLength: "Name should not be more than 20 characters",
+      },
     },
     email: {
       type: "string",
@@ -19,8 +19,8 @@ const userSchema = {
       errorMessage: {
         type: "Email must be a string",
         minLength: "Email must be at least 10 characters long",
-        format: "Email must be a valid email address"
-      }
+        format: "Email must be a valid email address",
+      },
     },
     password: {
       type: "string",
@@ -29,22 +29,20 @@ const userSchema = {
       errorMessage: {
         type: "Password must be a string",
         minLength: "Password must be at least 6 characters",
-        maxLength: "Password should not be more than 12 characters"
-      }
+        maxLength: "Password should not be more than 12 characters",
+      },
     },
-
   },
   additionalProperties: true,
   errorMessage: {
     required: {
       name: "Name is required",
       email: "Email is required",
-      password: "Password is required"
+      password: "Password is required",
     },
-    _: "Invalid data" // fallback message
-  }
+    _: "Invalid data", // fallback message
+  },
 };
-
 
 const companySchema = {
   type: "object",
@@ -56,17 +54,41 @@ const companySchema = {
       errorMessage: {
         type: "Name must be a text value",
         minLength: "Company name must be at least 3 characters",
-        maxLength: "Company name must not exceed 20 characters"
-      }
-    }
+        maxLength: "Company name must not exceed 20 characters",
+      },
+    },
   },
   required: ["name"],
   additionalProperties: false,
   errorMessage: {
     required: {
-      name: "Company name is required"
-    }
-  }
+      name: "Company name is required",
+    },
+  },
 };
 
-module.exports = { userSchema, companySchema };
+const createUserList = {
+  type: "object",
+  properties: {
+    title: {
+      type: "string",
+      minLength: 3,
+      maxLength: 20,
+      errorMessage: {
+        type: "title must be a text value",
+        minLength: "title must be at least 3 characters",
+        maxLength: "title must not exceed 20 characters",
+      },
+    },
+  },
+
+  additionalProperties: true,
+  errorMessage: {
+    required: {
+      name: "title is required",
+      email: "description is required",
+    },
+  },
+};
+
+module.exports = { userSchema, companySchema, createUserList };
