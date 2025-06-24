@@ -2,9 +2,16 @@ const express = require("express");
 const multer = require("multer");
 const userController = require("../controllers/userController");
 
-const { userSchema, createUserList } = require("../validators/userValidator");
+const {
+  userSchema,
+  createUserList,
+  createEmployeeList,
+} = require("../validators/userValidator");
 const { checkValidation } = require("../validators/validate");
-const { checkEmailUnique } = require("../middleware/checkEmailUnique");
+const {
+  checkEmailUnique,
+  checkContactUnique,
+} = require("../middleware/checkUnique");
 const { authenticateToken } = require("../middleware/auth");
 
 const router = express.Router();
@@ -29,5 +36,15 @@ router.post(
 );
 
 router.get("/userlist", authenticateToken, userController.getUserList);
+
+router.post(
+  "/employeeList",
+  upload.none(),
+  checkValidation(createEmployeeList),
+  authenticateToken,
+  checkEmailUnique,
+  checkContactUnique,
+  userController.createEmployeeList
+);
 
 module.exports = router;

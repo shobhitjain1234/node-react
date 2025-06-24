@@ -70,4 +70,31 @@ const createUserList = {
   },
 };
 
-module.exports = { userSchema, createUserList };
+const createEmployeeList = {
+  type: "object",
+  required: ["name", "address", "contact", "email"],
+  properties: {
+    name: {
+      type: "string",
+      minLength: 3,
+      maxLength: 20,
+      errorMessage: {
+        type: "name must be a text value",
+        minLength: "name must be at least 3 characters",
+        maxLength: "name must not exceed 20 characters",
+      },
+    },
+  },
+
+  additionalProperties: true,
+  errorMessage: {
+    required: {
+      name: "name is required",
+      address: "address is required",
+      contact: "contact is required",
+      email: "email is required",
+    },
+  },
+};
+
+module.exports = { userSchema, createUserList, createEmployeeList };

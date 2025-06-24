@@ -2,7 +2,11 @@ const db = require("../config/db");
 const bcrypt = require("bcrypt");
 
 exports.findUserByEmail = (email, cb) => {
-  db.query("SELECT * FROM student WHERE email = ?", [email], cb);
+  db.query("SELECT * FROM employee WHERE email = ?", [email], cb);
+};
+
+exports.findUserByContact = (contact, cb) => {
+  db.query("SELECT * FROM employee WHERE contact = ?", [contact], cb);
 };
 
 exports.findUserByEmailSign = (email, cb) => {
@@ -37,4 +41,8 @@ exports.createUserList = (item, cb) => {
 
 exports.getUserListByUserId = (user_id, cb) => {
   db.query("SELECT * FROM userList WHERE user_id = ?", [user_id], cb);
+};
+
+exports.createEmployeeList = (item, cb) => {
+  db.query("INSERT INTO employee SET ?", item, cb);
 };

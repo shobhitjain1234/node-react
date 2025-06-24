@@ -67,3 +67,15 @@ exports.getUserList = (req, res) => {
     res.json(results);
   });
 };
+
+exports.createEmployeeList = (req, res) => {
+  const { name, address, contact, email } = req.body;
+  const user_id = req.user.id; // From JWT token
+
+  const item = { name, address, contact, email, user_id };
+
+  userModel.createEmployeeList(item, (err, result) => {
+    if (err) return res.status(500).send(err);
+    res.json({ message: "employee added", id: result.insertId });
+  });
+};
