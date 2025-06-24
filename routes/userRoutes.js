@@ -9,7 +9,7 @@ const {
 } = require("../validators/userValidator");
 const { checkValidation } = require("../validators/validate");
 const {
-  checkEmailUnique,
+  checkUnique,
   checkContactUnique,
 } = require("../middleware/checkUnique");
 const { authenticateToken } = require("../middleware/auth");
@@ -42,8 +42,9 @@ router.post(
   upload.none(),
   checkValidation(createEmployeeList),
   authenticateToken,
-  checkEmailUnique,
-  checkContactUnique,
+  checkUnique({ columnName: "email", tableName: "employee" }),
+  checkUnique({ columnName: "contact", tableName: "employee" }),
+  // checkContactUnique,
   userController.createEmployeeList
 );
 

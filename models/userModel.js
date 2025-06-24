@@ -1,8 +1,8 @@
 const db = require("../config/db");
 const bcrypt = require("bcrypt");
 
-exports.findUserByEmail = (email, cb) => {
-  db.query("SELECT * FROM employee WHERE email = ?", [email], cb);
+exports.findUserByColumn = (column, columnName, tableName, cb) => {
+  db.query(`SELECT * FROM ${tableName} WHERE ${columnName} = ?`, [column], cb);
 };
 
 exports.findUserByContact = (contact, cb) => {
