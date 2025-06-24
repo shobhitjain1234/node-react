@@ -1,6 +1,6 @@
 const userSchema = {
   type: "object",
-  required: ["name", "email", "password"],
+  required: ["name", "email", "password", "address"],
   properties: {
     name: {
       type: "string",
@@ -39,36 +39,15 @@ const userSchema = {
       name: "Name is required",
       email: "Email is required",
       password: "Password is required",
+      address: "Address is required",
     },
     _: "Invalid data", // fallback message
   },
 };
 
-const companySchema = {
-  type: "object",
-  properties: {
-    name: {
-      type: "string",
-      minLength: 3,
-      maxLength: 20,
-      errorMessage: {
-        type: "Name must be a text value",
-        minLength: "Company name must be at least 3 characters",
-        maxLength: "Company name must not exceed 20 characters",
-      },
-    },
-  },
-  required: ["name"],
-  additionalProperties: false,
-  errorMessage: {
-    required: {
-      name: "Company name is required",
-    },
-  },
-};
-
 const createUserList = {
   type: "object",
+  required: ["title", "description"],
   properties: {
     title: {
       type: "string",
@@ -85,10 +64,10 @@ const createUserList = {
   additionalProperties: true,
   errorMessage: {
     required: {
-      name: "title is required",
-      email: "description is required",
+      title: "title is required",
+      description: "description is required",
     },
   },
 };
 
-module.exports = { userSchema, companySchema, createUserList };
+module.exports = { userSchema, createUserList };
