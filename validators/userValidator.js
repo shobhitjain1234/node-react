@@ -111,9 +111,50 @@ const createWorkList = {
   },
 };
 
+const forgetPassword = {
+  type: "object",
+  required: ["email"],
+
+  additionalProperties: true,
+  errorMessage: {
+    required: {
+      email: "email is required",
+    },
+  },
+};
+
+const resetPassword = {
+  type: "object",
+  required: ["email", "otp", "newPassword"],
+
+  properties: {
+    otp: {
+      type: "string",
+      minLength: 6,
+      maxLength: 6,
+      errorMessage: {
+        type: "name must be a text value",
+        minLength: "name must be 6 characters",
+        maxLength: "name must be 6 characters",
+      },
+    },
+  },
+
+  additionalProperties: true,
+  errorMessage: {
+    required: {
+      email: "email is required",
+      otp: "otp is required",
+      newPassword: "new password is required",
+    },
+  },
+};
+
 module.exports = {
   userSchema,
   createUserList,
   createEmployeeList,
   createWorkList,
+  resetPassword,
+  forgetPassword,
 };

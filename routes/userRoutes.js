@@ -7,6 +7,8 @@ const {
   createUserList,
   createEmployeeList,
   createWorkList,
+  resetPassword,
+  forgetPassword,
 } = require("../validators/userValidator");
 const { checkValidation } = require("../validators/validate");
 const {
@@ -61,7 +63,18 @@ router.post(
   userController.createWorkTypeList
 );
 
-router.post("/forgot-password", upload.none(), userController.forgotPassword);
-router.post("/reset-password", upload.none(), userController.resetPassword);
+router.post(
+  "/forgot-password",
+  upload.none(),
+  checkValidation(forgetPassword),
+  userController.forgotPassword
+);
+
+router.post(
+  "/reset-password",
+  upload.none(),
+  checkValidation(resetPassword),
+  userController.resetPassword
+);
 
 module.exports = router;
