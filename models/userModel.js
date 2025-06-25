@@ -51,24 +51,10 @@ exports.createWorkTypeList = (item, cb) => {
   db.query("INSERT INTO workType SET ?", item, cb);
 };
 
-exports.checkEmployeeExists = (work_id) => {
+exports.checkEmployeeExists = (work_id, tableName) => {
   return new Promise((resolve, reject) => {
     db.query(
-      "SELECT * FROM employee WHERE id = ?",
-      [work_id],
-      (err, result) => {
-        if (err) return reject(err);
-        if (result.length === 0) return resolve(null); // No employee found with the work_id
-        resolve(result[0]); // Return employee record
-      }
-    );
-  });
-};
-
-exports.checkEmployeeExists = (work_id) => {
-  return new Promise((resolve, reject) => {
-    db.query(
-      "SELECT * FROM employee WHERE id = ?",
+      `SELECT * FROM ${tableName} WHERE id = ?`,
       [work_id],
       (err, result) => {
         if (err) return reject(err);
