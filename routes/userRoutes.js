@@ -6,6 +6,7 @@ const {
   userSchema,
   createUserList,
   createEmployeeList,
+  createWorkList,
 } = require("../validators/userValidator");
 const { checkValidation } = require("../validators/validate");
 const {
@@ -13,6 +14,7 @@ const {
   checkContactUnique,
 } = require("../middleware/checkUnique");
 const { authenticateToken } = require("../middleware/auth");
+const { checkIfIdExists } = require("../middleware/checkIfIdExists");
 
 const router = express.Router();
 
@@ -46,6 +48,16 @@ router.post(
   checkUnique({ columnName: "contact", tableName: "employee" }),
   // checkContactUnique,
   userController.createEmployeeList
+);
+
+router.post(
+  "/workType",
+  upload.none(),
+  checkValidation(createWorkList),
+  authenticateToken,
+  checkIfIdExists("work_id", "employee"),
+  checkUnique({ columnName: "worktype", tableName: "workType" }),
+  userController.createWorkTypeList
 );
 
 module.exports = router;

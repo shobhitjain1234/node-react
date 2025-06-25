@@ -97,4 +97,23 @@ const createEmployeeList = {
   },
 };
 
-module.exports = { userSchema, createUserList, createEmployeeList };
+const createWorkList = {
+  type: "object",
+  required: ["worktype", "payroll", "work_id"],
+
+  additionalProperties: true,
+  errorMessage: {
+    required: {
+      worktype: "name is required",
+      payroll: "address is required",
+      work_id: "contact is required",
+    },
+  },
+};
+
+module.exports = {
+  userSchema,
+  createUserList,
+  createEmployeeList,
+  createWorkList,
+};

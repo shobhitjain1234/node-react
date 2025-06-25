@@ -79,3 +79,14 @@ exports.createEmployeeList = (req, res) => {
     res.json({ message: "employee added", id: result.insertId });
   });
 };
+
+exports.createWorkTypeList = (req, res) => {
+  const { worktype, payroll, work_id } = req.body;
+
+  const item = { worktype, payroll, work_id };
+
+  userModel.createWorkTypeList(item, (err, result) => {
+    if (err) return res.status(500).send(err);
+    res.json({ message: "work added", id: result.insertId });
+  });
+};
