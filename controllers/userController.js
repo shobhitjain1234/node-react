@@ -1,5 +1,7 @@
 const userModel = require("../models/userModel");
 const bcrypt = require("bcrypt");
+const crypto = require("crypto");
+const nodemailer = require("nodemailer");
 
 const { generateJWT } = require("../utils/jwtUtils");
 
@@ -88,5 +90,58 @@ exports.createWorkTypeList = (req, res) => {
   userModel.createWorkTypeList(item, (err, result) => {
     if (err) return res.status(500).send(err);
     res.json({ message: "work added", id: result.insertId });
+  });
+};
+
+exports.forgotPassword = (req, res) => {
+  const { email } = req.body;
+
+  userModel.findUserByEmailSign(email, (err, results) => {
+    if (err) return res.status(500).send(err);
+    if (results.length === 0) return res.status(404).send("Email not found");
+
+    const otp = Math.floor(100000 + Math.random() * 900000).toString(); // 6-digit
+    const expires = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+
+    userModel.storeResetOtp(email, otp, expires, (err) => {
+      if (err) return res.status(500).send(err);
+
+      // Send email
+      const transporter = nodemailer.createTransport({
+        service: process.env.SERVICE_PROVIDER,
+        auth: {
+          user: process.env.USER_EMAIL,
+          pass: process.env.PASSWORD,
+        },
+      });
+
+      const mailOptions = {
+        from: process.env.USER_EMAIL,
+        to: email,
+        subject: "Your OTP for Password Reset",
+        text: `Your OTP is ${otp}. It will expire in 10 minutes.`,
+      };
+
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) return res.status(500).send("Failed to send OTP email");
+        res.send("OTP sent to your email");
+      });
+    });
+  });
+};
+
+exports.resetPassword = async (req, res) => {
+  const { email, otp, newPassword } = req.body;
+
+  userModel.verifyResetOtp(email, otp, async (err, isValid) => {
+    if (err) return res.status(500).send(err);
+    if (!isValid) return res.status(400).send("Invalid or expired OTP");
+
+    const hashed = await bcrypt.hash(newPassword, 10);
+
+    userModel.updatePassword(email, hashed, (err) => {
+      if (err) return res.status(500).send(err);
+      res.send("Password reset successfully");
+    });
   });
 };

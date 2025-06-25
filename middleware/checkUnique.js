@@ -7,8 +7,6 @@ const checkUnique = (options = {}) => {
 
     const column = req.body[columnName];
 
-    console.log("checkEmailUnique middleware called with columnName:", column);
-
     userModel.findUserByColumn(
       column,
       columnName,

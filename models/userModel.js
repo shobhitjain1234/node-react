@@ -64,3 +64,31 @@ exports.checkEmployeeExists = (work_id, tableName) => {
     );
   });
 };
+
+exports.storeResetOtp = (email, otp, expires, cb) => {
+  db.query(
+    "UPDATE userLogin SET reset_otp = ?, reset_otp_expires = ? WHERE email = ?",
+    [otp, expires, email],
+    cb
+  );
+};
+
+exports.verifyResetOtp = (email, otp, cb) => {
+  db.query(
+    "SELECT * FROM userLogin WHERE email = ? AND reset_otp = ? AND reset_otp_expires > NOW()",
+    [email, otp],
+    (err, results) => {
+      if (err) return cb(err);
+      if (results.length === 0) return cb(null, false);
+      cb(null, true);
+    }
+  );
+};
+
+exports.updatePassword = (email, hashedPassword, cb) => {
+  db.query(
+    "UPDATE userLogin SET password = ?, reset_otp = NULL, reset_otp_expires = NULL WHERE email = ?",
+    [hashedPassword, email],
+    cb
+  );
+};

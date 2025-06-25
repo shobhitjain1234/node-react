@@ -2,7 +2,6 @@ const userModel = require("../models/userModel");
 
 // Middleware to check if work_id exists in employee table
 const checkIfIdExists = (columnName, tableName) => {
-  console.log("+++++++++++++++", columnName);
   return (req, res, next) => {
     const columnId = req.body[columnName]; // Get the ID from the request body
 

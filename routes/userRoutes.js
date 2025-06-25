@@ -24,6 +24,7 @@ router.post(
   "/signup",
   upload.none(),
   checkValidation(userSchema),
+  checkUnique({ columnName: "address", tableName: "userLogin" }),
   userController.handleUserSignUp
 ); // Sign-Up route
 
@@ -59,5 +60,8 @@ router.post(
   checkUnique({ columnName: "worktype", tableName: "workType" }),
   userController.createWorkTypeList
 );
+
+router.post("/forgot-password", upload.none(), userController.forgotPassword);
+router.post("/reset-password", upload.none(), userController.resetPassword);
 
 module.exports = router;
