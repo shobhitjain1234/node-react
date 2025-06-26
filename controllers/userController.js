@@ -75,6 +75,15 @@ exports.getUserList = (req, res) => {
   });
 };
 
+exports.getEmployeeList = (req, res) => {
+  const user_id = req.user.id;
+
+  userModel.getEmployeeListByUserId(user_id, (err, results) => {
+    if (err) return res.status(500).send(err);
+    res.json(results);
+  });
+};
+
 exports.getUserDetail = (req, res) => {
   const user_id = req.user.id;
 
@@ -104,6 +113,18 @@ exports.createWorkTypeList = (req, res) => {
   userModel.createWorkTypeList(item, (err, result) => {
     if (err) return res.status(500).send(err);
     res.json({ message: "work added", id: result.insertId });
+  });
+};
+
+exports.getWorkTypeById = (req, res) => {
+  const { id } = req.params; // work_id
+
+  userModel.getWorkTypeById(id, (err, results) => {
+    if (err) return res.status(500).send(err);
+    if (results.length === 0)
+      return res.status(404).send("No work types found for this work_id");
+
+    res.json(results); // returns an array of matching workType rows
   });
 };
 
@@ -157,5 +178,16 @@ exports.resetPassword = async (req, res) => {
       if (err) return res.status(500).send(err);
       res.send("Password reset successfully");
     });
+  });
+};
+
+exports.createWorkDetailList = (req, res) => {
+  const { payroll, hrs, work_id } = req.body;
+
+  const item = { payroll, hrs, work_id };
+
+  userModel.createWorkDetailList(item, (err, result) => {
+    if (err) return res.status(500).send(err);
+    res.json({ message: "work detail added", id: result.insertId });
   });
 };

@@ -43,6 +43,10 @@ exports.getUserListByUserId = (user_id, cb) => {
   db.query("SELECT * FROM userList WHERE user_id = ?", [user_id], cb);
 };
 
+exports.getEmployeeListByUserId = (user_id, cb) => {
+  db.query("SELECT * FROM employee WHERE user_id = ?", [user_id], cb);
+};
+
 exports.getUserUserId = (user_id, cb) => {
   db.query("SELECT * FROM userLogin WHERE id = ?", [user_id], cb);
 };
@@ -53,6 +57,10 @@ exports.createEmployeeList = (item, cb) => {
 
 exports.createWorkTypeList = (item, cb) => {
   db.query("INSERT INTO workType SET ?", item, cb);
+};
+
+exports.getWorkTypeById = (work_id, cb) => {
+  db.query("SELECT * FROM workType WHERE work_id = ?", [work_id], cb);
 };
 
 exports.checkEmployeeExists = (work_id, tableName) => {
@@ -95,4 +103,8 @@ exports.updatePassword = (email, hashedPassword, cb) => {
     [hashedPassword, email],
     cb
   );
+};
+
+exports.createWorkDetailList = (item, cb) => {
+  db.query("INSERT INTO workDetail SET ?", item, cb);
 };

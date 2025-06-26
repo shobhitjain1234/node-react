@@ -111,6 +111,18 @@ const createWorkList = {
   },
 };
 
+const createWorkDetailList = {
+  type: "object",
+  required: ["payroll"],
+
+  additionalProperties: true,
+  errorMessage: {
+    required: {
+      payroll: "payroll is required",
+    },
+  },
+};
+
 const forgetPassword = {
   type: "object",
   required: ["email"],
@@ -157,4 +169,5 @@ module.exports = {
   createWorkList,
   resetPassword,
   forgetPassword,
+  createWorkDetailList,
 };

@@ -9,6 +9,7 @@ const {
   createWorkList,
   resetPassword,
   forgetPassword,
+  createWorkDetailList,
 } = require("../validators/userValidator");
 const { checkValidation } = require("../validators/validate");
 const {
@@ -41,40 +42,9 @@ router.post(
   userController.handleUserSignUp
 ); // Sign-Up route
 
-router.post("/login", upload.none(), userController.loginUser); // Login route
-
-router.post(
-  "/userlist",
-  upload.none(),
-  checkValidation(createUserList),
-  authenticateToken,
-  userController.createUserList
-);
-
-router.get("/userlist", authenticateToken, userController.getUserList);
-
 router.get("/userDetail", authenticateToken, userController.getUserDetail);
 
-router.post(
-  "/employeeList",
-  upload.none(),
-  checkValidation(createEmployeeList),
-  authenticateToken,
-  checkUnique({ columnName: "email", tableName: "employee" }),
-  checkUnique({ columnName: "contact", tableName: "employee" }),
-  // checkContactUnique,
-  userController.createEmployeeList
-);
-
-router.post(
-  "/workType",
-  upload.none(),
-  checkValidation(createWorkList),
-  authenticateToken,
-  checkIfIdExists("work_id", "employee"),
-  checkUnique({ columnName: "worktype", tableName: "workType" }),
-  userController.createWorkTypeList
-);
+router.post("/login", upload.none(), userController.loginUser); // Login route
 
 router.post(
   "/forgot-password",
@@ -88,6 +58,50 @@ router.post(
   upload.none(),
   checkValidation(resetPassword),
   userController.resetPassword
+);
+
+router.post(
+  "/userlist",
+  upload.none(),
+  checkValidation(createUserList),
+  authenticateToken,
+  userController.createUserList
+);
+
+router.get("/userlist", authenticateToken, userController.getUserList);
+
+router.post(
+  "/employeeList",
+  upload.none(),
+  checkValidation(createEmployeeList),
+  authenticateToken,
+  checkUnique({ columnName: "email", tableName: "employee" }),
+  checkUnique({ columnName: "contact", tableName: "employee" }),
+  // checkContactUnique,
+  userController.createEmployeeList
+);
+
+router.get("/employeeList", authenticateToken, userController.getEmployeeList);
+
+router.post(
+  "/workType",
+  upload.none(),
+  checkValidation(createWorkList),
+  authenticateToken,
+  checkIfIdExists("work_id", "employee"),
+  checkUnique({ columnName: "worktype", tableName: "workType" }),
+  userController.createWorkTypeList
+);
+
+router.get("/workType/:id", authenticateToken, userController.getWorkTypeById);
+
+router.post(
+  "/workDetail",
+  upload.none(),
+  checkValidation(createWorkDetailList),
+  authenticateToken,
+  checkIfIdExists("work_id", "workType"),
+  userController.createWorkDetailList
 );
 
 module.exports = router;
