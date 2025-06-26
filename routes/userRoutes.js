@@ -20,11 +20,22 @@ const { checkIfIdExists } = require("../middleware/checkIfIdExists");
 
 const router = express.Router();
 
-const upload = multer(); // no disk storage, just parse form-data without files
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads/"); // Make sure this folder exists
+  },
+  filename: function (req, file, cb) {
+    const ext = file.originalname.split(".").pop();
+    const filename = `${Date.now()}-${Math.round(Math.random() * 1e9)}.${ext}`;
+    cb(null, filename);
+  },
+});
+
+const upload = multer({ storage: storage });
 
 router.post(
   "/signup",
-  upload.none(),
+  upload.single("image"), // changed from upload.none()
   checkValidation(userSchema),
   checkUnique({ columnName: "address", tableName: "userLogin" }),
   userController.handleUserSignUp

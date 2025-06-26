@@ -7,17 +7,22 @@ const { generateJWT } = require("../utils/jwtUtils");
 
 exports.handleUserSignUp = async (req, res) => {
   const { name, email, address, password } = req.body;
+  const image = req.file ? req.file.filename : null;
 
-  // Check if email already exists
   userModel.findUserByEmailSign(email, (err, result) => {
     if (err) return res.status(500).send(err);
     if (result.length > 0) return res.status(400).send("Email already in use");
 
-    // Hash the password before saving to the database
     bcrypt.hash(password, 10, (err, hashedPassword) => {
       if (err) return res.status(500).send("Error encrypting password");
 
-      const user = { name, email, address, password: hashedPassword };
+      const user = {
+        name,
+        email,
+        address,
+        password: hashedPassword,
+        image,
+      };
 
       userModel.createUserSignup(user, (err, result) => {
         if (err) return res.status(500).send(err);
