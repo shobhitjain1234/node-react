@@ -70,6 +70,15 @@ exports.getUserList = (req, res) => {
   });
 };
 
+exports.getUserDetail = (req, res) => {
+  const user_id = req.user.id;
+
+  userModel.getUserUserId(user_id, (err, results) => {
+    if (err) return res.status(500).send(err);
+    res.json(results);
+  });
+};
+
 exports.createEmployeeList = (req, res) => {
   const { name, address, contact, email } = req.body;
   const user_id = req.user.id; // From JWT token

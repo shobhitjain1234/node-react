@@ -42,6 +42,8 @@ router.post(
 
 router.get("/userlist", authenticateToken, userController.getUserList);
 
+router.get("/userDetail", authenticateToken, userController.getUserDetail);
+
 router.post(
   "/employeeList",
   upload.none(),

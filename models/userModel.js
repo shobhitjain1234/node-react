@@ -43,6 +43,10 @@ exports.getUserListByUserId = (user_id, cb) => {
   db.query("SELECT * FROM userList WHERE user_id = ?", [user_id], cb);
 };
 
+exports.getUserUserId = (user_id, cb) => {
+  db.query("SELECT * FROM userLogin WHERE id = ?", [user_id], cb);
+};
+
 exports.createEmployeeList = (item, cb) => {
   db.query("INSERT INTO employee SET ?", item, cb);
 };
