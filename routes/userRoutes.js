@@ -123,4 +123,10 @@ router.post(
 
 router.get("/companyList", authenticateToken, userController.getCompanyList);
 
+router.get(
+  "/companyDetail/:id",
+  authenticateToken,
+  userController.getCompanyDetail
+);
+
 module.exports = router;

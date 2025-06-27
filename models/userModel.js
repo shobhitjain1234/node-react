@@ -120,3 +120,7 @@ exports.createCompanyList = (item, cb) => {
 exports.getCompanyList = (company_id, cb) => {
   db.query("SELECT * FROM company WHERE company_id = ?", [company_id], cb);
 };
+
+exports.getCompanyDetail = (id, cb) => {
+  db.query("SELECT * FROM company WHERE id = ?", [id], cb);
+};
