@@ -137,3 +137,7 @@ exports.getCompanySearch = (
     cb
   );
 };
+
+exports.createVendorList = (item, cb) => {
+  db.query("INSERT INTO vendor SET ?", item, cb);
+};

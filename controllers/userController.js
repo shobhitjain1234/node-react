@@ -264,3 +264,19 @@ exports.getCompanySearch = (req, res) => {
     res.json(results); // returns an array of matching workType rows
   });
 };
+
+exports.createVendorList = (req, res) => {
+  const { name, email, total_experience_in_years, company_id } = req.body;
+
+  const item = {
+    name,
+    email,
+    total_experience_in_years,
+    company_id,
+  };
+
+  userModel.createVendorList(item, (err, result) => {
+    if (err) return res.status(500).send(err);
+    res.json({ message: "vendor added", id: result.insertId, code: 200 });
+  });
+};

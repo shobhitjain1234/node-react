@@ -176,6 +176,36 @@ const createCompanyList = {
   },
 };
 
+const createVendorList = {
+  type: "object",
+  required: ["name", "email", "total_experience_in_years", "company_id"],
+  additionalProperties: true,
+
+  properties: {
+    total_experience_in_years: {
+      type: "integer",
+      minimum: 0,
+    },
+    company_id: {
+      type: "integer",
+      minimum: 1,
+    },
+  },
+
+  errorMessage: {
+    required: {
+      name: "name is required",
+      email: "email is required",
+      total_experience_in_years: "experience is required",
+      company_id: "company id is required",
+    },
+    properties: {
+      total_experience_in_years: "experience must be an integer",
+      company_id: "company id must be an integer",
+    },
+  },
+};
+
 module.exports = {
   userSchema,
   createUserList,
@@ -185,4 +215,5 @@ module.exports = {
   forgetPassword,
   createWorkDetailList,
   createCompanyList,
+  createVendorList,
 };

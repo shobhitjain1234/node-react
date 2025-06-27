@@ -11,6 +11,7 @@ const {
   forgetPassword,
   createWorkDetailList,
   createCompanyList,
+  createVendorList,
 } = require("../validators/userValidator");
 const { checkValidation } = require("../validators/validate");
 const {
@@ -130,9 +131,19 @@ router.get(
 );
 
 router.get(
-  "/companySearch/:required/:experience",
+  "/companyList/:required/:experience",
   authenticateToken,
   userController.getCompanySearch
+);
+
+router.post(
+  "/vendorList",
+  upload.none(),
+  checkValidation(createVendorList),
+  authenticateToken,
+  checkUnique({ columnName: "email", tableName: "vendor" }),
+  checkIfIdExists("company_id", "company"),
+  userController.createVendorList
 );
 
 module.exports = router;
