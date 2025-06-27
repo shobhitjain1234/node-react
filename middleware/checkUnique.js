@@ -1,7 +1,7 @@
 const userModel = require("../models/userModel");
 
 // Factory function that returns middleware
-const checkUnique = (options = {}) => {
+const checkUniqueInWholeTable = (options = {}) => {
   return (req, res, next) => {
     const { columnName, tableName } = options;
 
@@ -25,17 +25,37 @@ const checkUnique = (options = {}) => {
   };
 };
 
-const checkContactUnique = (req, res, next) => {
-  const contact = req.body.contact;
+const checkUniqueInCompanyScope = (options = {}) => {
+  return (req, res, next) => {
+    const { columnName, tableName } = options;
 
-  userModel.findUserByContact(contact, (err, results) => {
-    if (err) return res.status(500).send(err);
-    if (results.length > 0) {
-      //   return res.status(400).json({ message: "contact already exists" });
-      return res.json({ message: "contact already exists", code: 176 });
+    const columnValue = req.body[columnName];
+    const companyId = req.body.company_id;
+
+    if (!companyId) {
+      return res.status(400).json({
+        message: "company_id is required for uniqueness check",
+        code: 106,
+      });
     }
-    next();
-  });
+
+    userModel.findUserByColumnAndCompany(
+      columnValue,
+      columnName,
+      tableName,
+      companyId,
+      (err, results) => {
+        if (err) return res.status(500).send(err);
+        if (results.length > 0) {
+          return res.json({
+            message: `${columnName} already exists in the same company`,
+            code: 105,
+          });
+        }
+        next();
+      }
+    );
+  };
 };
 
-module.exports = { checkUnique, checkContactUnique };
+module.exports = { checkUniqueInWholeTable, checkUniqueInCompanyScope };

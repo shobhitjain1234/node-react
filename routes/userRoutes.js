@@ -14,13 +14,12 @@ const {
   createVendorList,
 } = require("../validators/userValidator");
 const { checkValidation } = require("../validators/validate");
-const {
-  checkUnique,
-  checkContactUnique,
-} = require("../middleware/checkUnique");
 const { authenticateToken } = require("../middleware/auth");
 const { checkIfIdExists } = require("../middleware/checkIfIdExists");
-
+const {
+  checkUniqueInWholeTable,
+  checkUniqueInCompanyScope,
+} = require("../middleware/checkUnique");
 const router = express.Router();
 
 const storage = multer.diskStorage({
@@ -40,7 +39,7 @@ router.post(
   "/signup",
   upload.single("image"), // changed from upload.none()
   checkValidation(userSchema),
-  checkUnique({ columnName: "address", tableName: "userLogin" }),
+  checkUniqueInWholeTable({ columnName: "address", tableName: "userLogin" }),
   userController.handleUserSignUp
 ); // Sign-Up route
 
@@ -77,8 +76,8 @@ router.post(
   upload.none(),
   checkValidation(createEmployeeList),
   authenticateToken,
-  checkUnique({ columnName: "email", tableName: "employee" }),
-  checkUnique({ columnName: "contact", tableName: "employee" }),
+  checkUniqueInWholeTable({ columnName: "email", tableName: "employee" }),
+  checkUniqueInWholeTable({ columnName: "contact", tableName: "employee" }),
   // checkContactUnique,
   userController.createEmployeeList
 );
@@ -91,7 +90,7 @@ router.post(
   checkValidation(createWorkList),
   authenticateToken,
   checkIfIdExists("work_id", "employee"),
-  checkUnique({ columnName: "worktype", tableName: "workType" }),
+  checkUniqueInWholeTable({ columnName: "worktype", tableName: "workType" }),
   userController.createWorkTypeList
 );
 
@@ -117,8 +116,8 @@ router.post(
   upload.none(),
   checkValidation(createCompanyList),
   authenticateToken,
-  checkUnique({ columnName: "company_name", tableName: "company" }),
-  checkUnique({ columnName: "emai", tableName: "company" }),
+  checkUniqueInWholeTable({ columnName: "company_name", tableName: "company" }),
+  checkUniqueInWholeTable({ columnName: "emai", tableName: "company" }),
   userController.createCompanyList
 );
 
@@ -141,7 +140,7 @@ router.post(
   upload.none(),
   checkValidation(createVendorList),
   authenticateToken,
-  checkUnique({ columnName: "email", tableName: "vendor" }),
+  checkUniqueInCompanyScope({ columnName: "email", tableName: "vendor" }),
   checkIfIdExists("company_id", "company"),
   userController.createVendorList
 );

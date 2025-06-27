@@ -5,9 +5,21 @@ exports.findUserByColumn = (column, columnName, tableName, cb) => {
   db.query(`SELECT * FROM ${tableName} WHERE ${columnName} = ?`, [column], cb);
 };
 
-exports.findUserByContact = (contact, cb) => {
-  db.query("SELECT * FROM employee WHERE contact = ?", [contact], cb);
-};
+(exports.findUserByColumnAndCompany = (
+  value,
+  columnName,
+  tableName,
+  companyId,
+  callback
+) => {
+  const query = `SELECT * FROM ?? WHERE ?? = ? AND company_id = ? LIMIT 1`;
+  const params = [tableName, columnName, value, companyId];
+
+  db.query(query, params, callback);
+}),
+  (exports.findUserByContact = (contact, cb) => {
+    db.query("SELECT * FROM employee WHERE contact = ?", [contact], cb);
+  });
 
 exports.findUserByEmailSign = (email, cb) => {
   db.query("SELECT * FROM userLogin WHERE email = ?", [email], cb);
