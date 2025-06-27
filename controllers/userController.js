@@ -191,3 +191,15 @@ exports.createWorkDetailList = (req, res) => {
     res.json({ message: "work detail added", id: result.insertId });
   });
 };
+
+exports.getWorkDetailById = (req, res) => {
+  const { id } = req.params; // work_id
+
+  userModel.getWorkDetailById(id, (err, results) => {
+    if (err) return res.status(500).send(err);
+    if (results.length === 0)
+      return res.status(404).send("No work types found for this work_id");
+
+    res.json(results); // returns an array of matching workType rows
+  });
+};

@@ -104,4 +104,10 @@ router.post(
   userController.createWorkDetailList
 );
 
+router.get(
+  "/workDetail/:id",
+  authenticateToken,
+  userController.getWorkDetailById
+);
+
 module.exports = router;

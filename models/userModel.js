@@ -108,3 +108,7 @@ exports.updatePassword = (email, hashedPassword, cb) => {
 exports.createWorkDetailList = (item, cb) => {
   db.query("INSERT INTO workDetail SET ?", item, cb);
 };
+
+exports.getWorkDetailById = (work_id, cb) => {
+  db.query("SELECT * FROM workDetail WHERE work_id = ?", [work_id], cb);
+};
