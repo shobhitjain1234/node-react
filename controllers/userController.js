@@ -203,3 +203,40 @@ exports.getWorkDetailById = (req, res) => {
     res.json(results); // returns an array of matching workType rows
   });
 };
+
+exports.createCompanyList = (req, res) => {
+  const {
+    company_name,
+    emai,
+    address,
+    domain,
+    is_experience_required,
+    total_experience_in_years,
+  } = req.body;
+
+  const company_id = req.user.id; // From JWT token
+
+  const item = {
+    company_name,
+    emai,
+    address,
+    domain,
+    is_experience_required,
+    total_experience_in_years,
+    company_id,
+  };
+
+  userModel.createCompanyList(item, (err, result) => {
+    if (err) return res.status(500).send(err);
+    res.json({ message: "company added", id: result.insertId, code: 200 });
+  });
+};
+
+exports.getCompanyList = (req, res) => {
+  const company_id = req.user.id;
+
+  userModel.getCompanyList(company_id, (err, results) => {
+    if (err) return res.status(500).send(err);
+    res.json(results);
+  });
+};

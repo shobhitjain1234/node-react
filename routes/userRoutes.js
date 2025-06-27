@@ -10,6 +10,7 @@ const {
   resetPassword,
   forgetPassword,
   createWorkDetailList,
+  createCompanyList,
 } = require("../validators/userValidator");
 const { checkValidation } = require("../validators/validate");
 const {
@@ -109,5 +110,17 @@ router.get(
   authenticateToken,
   userController.getWorkDetailById
 );
+
+router.post(
+  "/companyList",
+  upload.none(),
+  checkValidation(createCompanyList),
+  authenticateToken,
+  checkUnique({ columnName: "company_name", tableName: "company" }),
+  checkUnique({ columnName: "emai", tableName: "company" }),
+  userController.createCompanyList
+);
+
+router.get("/companyList", authenticateToken, userController.getCompanyList);
 
 module.exports = router;

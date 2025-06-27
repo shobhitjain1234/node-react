@@ -162,6 +162,20 @@ const resetPassword = {
   },
 };
 
+const createCompanyList = {
+  type: "object",
+  required: ["company_name", "emai", "is_experience_required"],
+
+  additionalProperties: true,
+  errorMessage: {
+    required: {
+      company_name: "company name is required",
+      emai: "email is required",
+      is_experience_required: "experience is required",
+    },
+  },
+};
+
 module.exports = {
   userSchema,
   createUserList,
@@ -170,4 +184,5 @@ module.exports = {
   resetPassword,
   forgetPassword,
   createWorkDetailList,
+  createCompanyList,
 };

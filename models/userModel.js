@@ -112,3 +112,11 @@ exports.createWorkDetailList = (item, cb) => {
 exports.getWorkDetailById = (work_id, cb) => {
   db.query("SELECT * FROM workDetail WHERE work_id = ?", [work_id], cb);
 };
+
+exports.createCompanyList = (item, cb) => {
+  db.query("INSERT INTO company SET ?", item, cb);
+};
+
+exports.getCompanyList = (company_id, cb) => {
+  db.query("SELECT * FROM company WHERE company_id = ?", [company_id], cb);
+};
