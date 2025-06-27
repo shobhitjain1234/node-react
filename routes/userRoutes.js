@@ -129,4 +129,10 @@ router.get(
   userController.getCompanyDetail
 );
 
+router.get(
+  "/companySearch/:required/:experience",
+  authenticateToken,
+  userController.getCompanySearch
+);
+
 module.exports = router;

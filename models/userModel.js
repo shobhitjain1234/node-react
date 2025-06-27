@@ -124,3 +124,16 @@ exports.getCompanyList = (company_id, cb) => {
 exports.getCompanyDetail = (id, cb) => {
   db.query("SELECT * FROM company WHERE id = ?", [id], cb);
 };
+
+exports.getCompanySearch = (
+  is_experience_required,
+  total_experience_in_years,
+  cb
+) => {
+  db.query(
+    "SELECT * FROM company WHERE is_experience_required = ? && total_experience_in_years = ?",
+    [is_experience_required, total_experience_in_years],
+
+    cb
+  );
+};

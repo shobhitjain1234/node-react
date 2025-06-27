@@ -252,3 +252,15 @@ exports.getCompanyDetail = (req, res) => {
     res.json(results[0]); // returns an array of matching workType rows
   });
 };
+
+exports.getCompanySearch = (req, res) => {
+  const { required, experience } = req.params; // work_id
+
+  userModel.getCompanySearch(required, experience, (err, results) => {
+    if (err) return res.status(500).send(err);
+    if (results.length === 0)
+      return res.status(404).send("No detail found for this work_id");
+
+    res.json(results); // returns an array of matching workType rows
+  });
+};
