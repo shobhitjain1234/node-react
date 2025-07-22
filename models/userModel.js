@@ -153,3 +153,25 @@ exports.getCompanySearch = (
 exports.createVendorList = (item, cb) => {
   db.query("INSERT INTO vendor SET ?", item, cb);
 };
+
+exports.getVendorsByCompany = (company_id, cb) => {
+  db.query("SELECT * FROM vendor WHERE company_id = ?", [company_id], cb);
+};
+
+exports.getVendorListWithCompany = (cb) => {
+  const query = `
+    SELECT 
+      vendor.id AS vendor_id,
+      vendor.name AS vendor_name,
+      vendor.email,
+      vendor.total_experience_in_years,
+      vendor.company_id,
+      company.company_name,
+      company.address,
+      company.domain
+    FROM vendor
+    INNER JOIN company ON vendor.company_id = company.id
+  `;
+
+  db.query(query, cb);
+};

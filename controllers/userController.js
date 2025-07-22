@@ -280,3 +280,23 @@ exports.createVendorList = (req, res) => {
     res.json({ message: "vendor added", id: result.insertId, code: 200 });
   });
 };
+
+exports.getVendorListByCompany = (req, res) => {
+  const { company_id } = req.params;
+
+  userModel.getVendorsByCompany(company_id, (err, vendors) => {
+    if (err) {
+      return res.status(500).json({ error: "Database error" });
+    }
+    res.status(200).json({ vendors });
+  });
+};
+
+exports.getVendorListWithCompany = (req, res) => {
+  userModel.getVendorListWithCompany((err, vendors) => {
+    if (err) {
+      return res.status(500).json({ error: "Database join error" });
+    }
+    res.status(200).json({ vendors });
+  });
+};

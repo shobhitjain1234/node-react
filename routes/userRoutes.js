@@ -145,4 +145,16 @@ router.post(
   userController.createVendorList
 );
 
+router.get(
+  "/vendorList/:company_id",
+  authenticateToken,
+  userController.getVendorListByCompany
+);
+
+router.get(
+  "/vendorWithCompany",
+  authenticateToken,
+  userController.getVendorListWithCompany
+);
+
 module.exports = router;
