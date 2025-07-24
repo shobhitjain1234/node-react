@@ -206,6 +206,32 @@ const createVendorList = {
   },
 };
 
+const createProductList = {
+  type: "object",
+  required: ["name", "price", "type"],
+  properties: {
+    name: {
+      type: "string",
+      minLength: 3,
+      maxLength: 20,
+      errorMessage: {
+        type: "name must be a text value",
+        minLength: "name must be at least 3 characters",
+        maxLength: "name must not exceed 20 characters",
+      },
+    },
+  },
+
+  additionalProperties: true,
+  errorMessage: {
+    required: {
+      name: "name is required",
+      price: "price is required",
+      type: "type is required",
+    },
+  },
+};
+
 module.exports = {
   userSchema,
   createUserList,
@@ -216,4 +242,5 @@ module.exports = {
   createWorkDetailList,
   createCompanyList,
   createVendorList,
+  createProductList,
 };

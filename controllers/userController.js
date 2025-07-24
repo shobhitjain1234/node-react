@@ -300,3 +300,40 @@ exports.getVendorListWithCompany = (req, res) => {
     res.status(200).json({ vendors });
   });
 };
+
+exports.createProductList = (req, res) => {
+  const { name, price, type } = req.body;
+  const user_id = req.user.id; // From JWT token
+
+  const item = { name, price, type, user_id };
+
+  userModel.createProductList(item, (err, result) => {
+    if (err) return res.status(500).send(err);
+    res.json({ message: "product added", id: result.insertId });
+  });
+};
+
+exports.getProductList = (req, res) => {
+  const user_id = req.user.id;
+  const searchText = req.query.search || ""; // Get search from query param
+  const priceText = req.query.price || ""; // Get price from query param
+
+  userModel.getProductListByUserId(
+    user_id,
+    searchText,
+    priceText,
+    (err, results) => {
+      if (err) return res.status(500).send(err);
+      res.json(results);
+    }
+  );
+};
+
+exports.getProductTypeTotal = (req, res) => {
+  const user_id = req.user.id;
+
+  userModel.getProductTypeTotalByUserId(user_id, (err, results) => {
+    if (err) return res.status(500).send(err);
+    res.json(results);
+  });
+};

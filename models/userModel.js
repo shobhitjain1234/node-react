@@ -175,3 +175,35 @@ exports.getVendorListWithCompany = (cb) => {
 
   db.query(query, cb);
 };
+
+exports.createProductList = (item, cb) => {
+  db.query("INSERT INTO product SET ?", item, cb);
+};
+
+exports.getProductListByUserId = (user_id, searchText, priceText, cb) => {
+  let query = `SELECT * FROM product WHERE user_id = ?`;
+  let params = [user_id];
+
+  if (searchText && priceText) {
+    query += ` AND (name LIKE ? AND price LIKE ?)`;
+    params.push(`%${searchText}%`, `%${priceText}%`);
+  } else if (searchText) {
+    query += ` AND name LIKE ?`;
+    params.push(`%${searchText}%`);
+  } else if (priceText) {
+    query += ` AND price LIKE ?`;
+    params.push(`%${priceText}%`);
+  }
+
+  db.query(query, params, cb);
+};
+
+exports.getProductTypeTotalByUserId = (user_id, cb) => {
+  const query = `
+    SELECT type, SUM(CAST(price AS DECIMAL)) AS total_price
+    FROM product
+    WHERE user_id = ?
+    GROUP BY type
+  `;
+  db.query(query, [user_id], cb);
+};

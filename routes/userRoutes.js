@@ -12,6 +12,7 @@ const {
   createWorkDetailList,
   createCompanyList,
   createVendorList,
+  createProductList,
 } = require("../validators/userValidator");
 const { checkValidation } = require("../validators/validate");
 const { authenticateToken } = require("../middleware/auth");
@@ -155,6 +156,22 @@ router.get(
   "/vendorWithCompany",
   authenticateToken,
   userController.getVendorListWithCompany
+);
+
+router.post(
+  "/productList",
+  upload.none(),
+  checkValidation(createProductList),
+  authenticateToken,
+  userController.createProductList
+);
+
+router.get("/productList", authenticateToken, userController.getProductList);
+
+router.get(
+  "/productTypeTotal",
+  authenticateToken,
+  userController.getProductTypeTotal
 );
 
 module.exports = router;
