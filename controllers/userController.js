@@ -93,6 +93,34 @@ exports.getUserDetail = (req, res) => {
   });
 };
 
+exports.getAllLogedUser = (req, res) => {
+  userModel.getAllLoggedUser((err, results) => {
+    if (err) return res.status(500).send(err);
+    res.json(results);
+  });
+};
+
+exports.deleteLoggedUser = (req, res) => {
+  const { id } = req.params;
+
+  userModel.deleteLoggedUser(id, (err, result) => {
+    if (err) {
+      console.error("Delete user error:", err);
+      return res
+        .status(500)
+        .json({ message: "Server error while deleting user." });
+    }
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    res
+      .status(200)
+      .json({ message: "User deleted successfully (with cascade)." });
+  });
+};
+
 exports.createEmployeeList = (req, res) => {
   const { name, address, contact, email } = req.body;
   const user_id = req.user.id; // From JWT token

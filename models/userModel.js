@@ -63,6 +63,14 @@ exports.getUserUserId = (user_id, cb) => {
   db.query("SELECT * FROM userLogin WHERE id = ?", [user_id], cb);
 };
 
+exports.getAllLoggedUser = (cb) => {
+  db.query("SELECT * FROM userLogin ", cb);
+};
+
+exports.deleteLoggedUser = (userId, cb) => {
+  db.query("DELETE FROM userLogin WHERE id = ?", [userId], cb);
+};
+
 exports.createEmployeeList = (item, cb) => {
   db.query("INSERT INTO employee SET ?", item, cb);
 };

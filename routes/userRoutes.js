@@ -46,6 +46,14 @@ router.post(
 
 router.get("/userDetail", authenticateToken, userController.getUserDetail);
 
+router.get("/allLoggedUser", userController.getAllLogedUser);
+
+router.delete(
+  "/loggedUser/:id",
+  upload.none(),
+  userController.deleteLoggedUser
+);
+
 router.post("/login", upload.none(), userController.loginUser); // Login route
 
 router.post(
